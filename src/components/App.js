@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import './App.css';
-
+import axios from 'axios';
+import Post from './Post/Post'
 import Header from './Header/Header';
 import Compose from './Compose/Compose';
 
@@ -10,7 +11,9 @@ class App extends Component {
     super();
 
     this.state = {
-      posts: []
+      posts: [],
+      baseURL: 'https://practiceapi.devmountain.com/api',
+      failure: 'Failed to communicate with api'
     };
 
     this.updatePost = this.updatePost.bind( this );
@@ -19,23 +22,39 @@ class App extends Component {
   }
   
   componentDidMount() {
-
+    axios.get(`${this.state.baseURL}/posts`).then(res => {
+      // this.setState({posts: res.data})
+      console.log(res.data)
+    })
+    .catch(() => alert(this.state.failure))
   }
 
-  updatePost() {
-  
+  updatePost(id, updateText) {
+    // axios.put(`${this.state.baseURL}/posts?id=${id}`, {updateText}).then(res => [
+    //   this.setState({posts: res.data})
+    // ])
+    // .catch(() => alert(this.state.failure))
   }
 
-  deletePost() {
-
+  deletePost(id) {
+    axios.delete(`${this.state.baseURL}/posts?id=$1867`).then(res => {
+      this.setState({posts: res.data})
+    })
+    .catch(() => alert(this.state.failure))
   }
 
-  createPost() {
-
+  createPost(text) {
+    // axios.post(`${this.state.baseURL}/posts`, {text}).then(res => {
+    //   this.setState({posts: res.data})
+    // })
+    // .catch(() => alert(this.state.failure))
   }
 
   render() {
     const { posts } = this.state;
+    const displayPost = this.state.posts.map(post => {
+      return <Post key={post.id} text={post.text} date={post.date} updatePostFn={this.updatePost} id={post.id} deletePostFn={this.deletePost} />
+    })
 
     return (
       <div className="App__parent">
@@ -43,7 +62,9 @@ class App extends Component {
 
         <section className="App__content">
 
-          <Compose />
+          <Compose createPostFn={this.createPost}/>
+
+          {displayPost}
           
         </section>
       </div>
