@@ -23,37 +23,40 @@ class App extends Component {
   
   componentDidMount() {
     axios.get(`${this.state.baseURL}/posts`).then(res => {
-      // this.setState({posts: res.data})
-      console.log(res.data)
+      this.setState({posts: res.data})
     })
     .catch(() => alert(this.state.failure))
   }
 
   updatePost(id, updateText) {
-    // axios.put(`${this.state.baseURL}/posts?id=${id}`, {updateText}).then(res => [
-    //   this.setState({posts: res.data})
-    // ])
-    // .catch(() => alert(this.state.failure))
+    axios.put(`${this.state.baseURL}/posts?id=${id}`, {updateText}).then(res => [
+      this.setState({posts: res.data})
+    ])
+    .catch(() => alert(this.state.failure))
   }
 
   deletePost(id) {
-    axios.delete(`${this.state.baseURL}/posts?id=$1867`).then(res => {
+    axios.delete(`${this.state.baseURL}/posts?id=${id}`).then(res => {
       this.setState({posts: res.data})
     })
     .catch(() => alert(this.state.failure))
   }
 
   createPost(text) {
-    // axios.post(`${this.state.baseURL}/posts`, {text}).then(res => {
-    //   this.setState({posts: res.data})
-    // })
-    // .catch(() => alert(this.state.failure))
+    axios.post(`${this.state.baseURL}/posts`, {text}).then(res => {
+      this.setState({posts: res.data})
+    })
+    .catch(() => alert(this.state.failure))
   }
 
   render() {
-    const { posts } = this.state;
     const displayPost = this.state.posts.map(post => {
-      return <Post key={post.id} text={post.text} date={post.date} updatePostFn={this.updatePost} id={post.id} deletePostFn={this.deletePost} />
+      return <Post key={post.id}
+      text={post.text}
+      date={post.date}
+      id={post.id}
+      updatePostFn={this.updatePost}
+      deletePostFn={this.deletePost} />
     })
 
     return (
