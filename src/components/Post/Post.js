@@ -95,12 +95,10 @@ export default class Post extends Component {
             // This has been pulled off of this.state via destructuring
             editing
             ?
-              <Edit key={ this.props.id }
+              <Edit
                 id={ this.props.id }
                 text={ this.props.text}
-                date={ this.props.date }
                 updatePostFn={ this.props.updatePostFn }
-                deletePostFn={ this.props.deletePostFn }
                 hideEdit={this.hideEdit}/>
             :
           <span className="Post__text">{this.props.text}</span>
